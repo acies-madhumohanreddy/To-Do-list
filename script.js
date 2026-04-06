@@ -292,6 +292,8 @@ function renderTasks() {
     li.appendChild(actions);
     todoList.appendChild(li);
   });
+
+  renderProgress(tasks);
 }
 
 // Helper: get rendered position (used for fade-out animation)
