@@ -4,21 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do App</title>
+  <meta name="description" content="A collaborative To-Do app with search and edit functionality.">
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 </head>
 <body>
 
-  <div class="container">
-    <h1>To-Do List</h1>
+  <div class="app-wrapper">
+    <div class="container">
 
-    <div class="input-group">
-      <input type="text" id="todoInput" placeholder="Add a task...">
-      <button id="addBtn">Add</button>
+      <!-- Header -->
+      <div class="header">
+        <div class="header-icon">
+          <span class="material-icons-round">checklist_rtl</span>
+        </div>
+        <div>
+          <h1>My To-Do List</h1>
+          <p class="subtitle">Stay organized, stay productive</p>
+        </div>
+      </div>
+
+      <!-- Add Task -->
+      <div class="input-group">
+        <span class="material-icons-round input-icon">add_task</span>
+        <input type="text" id="todoInput" placeholder="Add a new task..." autocomplete="off">
+        <button id="addBtn">
+          <span class="material-icons-round">add</span>
+          Add
+        </button>
+      </div>
+
+      <!-- Search Tasks -->
+      <div class="search-group">
+        <span class="material-icons-round search-icon">search</span>
+        <input type="text" id="searchInput" placeholder="Search tasks..." autocomplete="off">
+        <span class="material-icons-round clear-search" id="clearSearch" title="Clear search">close</span>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <span id="taskCount">0 tasks</span>
+        <span id="searchStatus" class="search-status"></span>
+      </div>
+
+      <!-- Task List -->
+      <ul id="todoList"></ul>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <span class="material-icons-round">task_alt</span>
+        <p>No tasks yet. Add one above!</p>
+      </div>
+
+      <!-- No Results State -->
+      <div class="no-results" id="noResults" style="display:none;">
+        <span class="material-icons-round">search_off</span>
+        <p>No tasks match your search.</p>
+      </div>
+
     </div>
+  </div>
 
-    <input type="text" id="searchInput" placeholder="Search tasks...">
-
-    <ul id="todoList"></ul>
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2><span class="material-icons-round">edit</span> Edit Task</h2>
+        <button class="modal-close" id="closeModal">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="editInput">Update your task</label>
+        <input type="text" id="editInput" placeholder="Edit task..." autocomplete="off">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelEdit">Cancel</button>
+        <button class="btn-save" id="saveEdit">
+          <span class="material-icons-round">save</span>
+          Save Changes
+        </button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
