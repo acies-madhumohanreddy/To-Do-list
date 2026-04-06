@@ -26,12 +26,74 @@ const closeModal  = document.getElementById('closeModal');
 const cancelEdit  = document.getElementById('cancelEdit');
 const saveEdit    = document.getElementById('saveEdit');
 
+// Toast
+const toastContainer = document.getElementById('toastContainer');
+
+// Clear All
+const clearAllBtn = document.getElementById('clearAllBtn');
+
+// =============================================
+// TOAST NOTIFICATIONS
+// =============================================
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+
+  const icon = type === 'success' ? 'check_circle' :
+               type === 'error' ? 'error' :
+               type === 'warning' ? 'warning' : 'info';
+
+  toast.innerHTML = `
+    <span class="material-icons-round">${icon}</span>
+    <span class="toast-message">${message}</span>
+    <button class="toast-close">
+      <span class="material-icons-round">close</span>
+    </button>
+  `;
+
+  toastContainer.appendChild(toast);
+
+  // Close button
+  const closeBtn = toast.querySelector('.toast-close');
+  closeBtn.addEventListener('click', () => hideToast(toast));
+
+  // Auto hide after 4 seconds
+  setTimeout(() => {
+    if (toast.parentNode) hideToast(toast);
+  }, 4000);
+
+  // Show animation
+  setTimeout(() => toast.classList.add('show'), 10);
+}
+
+function hideToast(toast) {
+  toast.classList.remove('show');
+  setTimeout(() => {
+    if (toast.parentNode) toast.parentNode.removeChild(toast);
+  }, 300);
+}
+
 // =============================================
 // SAVE & LOAD
 // =============================================
 function saveTasks() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
+// =============================================
+// CLEAR ALL TASKS
+// =============================================
+function clearAllTasks() {
+  if (tasks.length === 0) return;
+  if (confirm('Are you sure you want to delete all tasks? This action cannot be undone.')) {
+    tasks = [];
+    localStorage.removeItem('tasks');
+    renderTasks();
+    showToast('All tasks cleared!', 'warning');
+  }
+}
+
+clearAllBtn.addEventListener('click', clearAllTasks);
 
 // =============================================
 // ADD TASK
@@ -49,6 +111,7 @@ function addTask() {
   todoInput.value = '';
   todoInput.focus();
   renderTasks();
+  showToast('Task added successfully!');
 }
 
 addBtn.addEventListener('click', addTask);
@@ -67,11 +130,13 @@ function deleteTask(index) {
       tasks.splice(index, 1);
       saveTasks();
       renderTasks();
+      showToast('Task deleted successfully!', 'error');
     }, 180);
   } else {
     tasks.splice(index, 1);
     saveTasks();
     renderTasks();
+    showToast('Task deleted successfully!', 'error');
   }
 }
 
@@ -82,6 +147,8 @@ function toggleComplete(index) {
   tasks[index].completed = !tasks[index].completed;
   saveTasks();
   renderTasks();
+  const status = tasks[index].completed ? 'completed' : 'marked incomplete';
+  showToast(`Task ${status}!`);
 }
 
 // =============================================
@@ -107,6 +174,7 @@ function saveEditedTask() {
     saveTasks();
     closeEditModal();
     renderTasks();
+    showToast('Task updated successfully!', 'warning');
   }
 }
 
@@ -173,6 +241,9 @@ function renderTasks() {
   // Update stats
   const total = tasks.length;
   taskCount.textContent = `${total} task${total !== 1 ? 's' : ''}`;
+
+  // Show/hide clear all button
+  clearAllBtn.classList.toggle('visible', total > 0);
 
   if (query) {
     searchStatus.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''} found`;
