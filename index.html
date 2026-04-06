@@ -45,7 +45,13 @@
       <!-- Stats Bar -->
       <div class="stats-bar">
         <span id="taskCount">0 tasks</span>
-        <span id="searchStatus" class="search-status"></span>
+        <div class="stats-actions">
+          <span id="searchStatus" class="search-status"></span>
+          <button id="clearAllBtn" class="btn-clear-all" title="Clear all tasks">
+            <span class="material-icons-round">delete_sweep</span>
+            Clear All
+          </button>
+        </div>
       </div>
 
       <!-- Task List -->
@@ -88,6 +94,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Toast Notifications -->
+  <div id="toastContainer" class="toast-container"></div>
 
   <script src="script.js"></script>
 </body>
